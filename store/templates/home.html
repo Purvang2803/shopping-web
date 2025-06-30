@@ -1,0 +1,76 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>ShopMart - Home</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PRODUCTS -->
+  <div class="container py-5">
+    <h2 class="text-center mb-4">Our Products</h2>
+    <div class="row">
+      {% for product in products %}
+      <div class="col-md-3 mb-4">
+        <div class="card h-100">
+          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text text-muted">₹{{ product.price }}</p>
+            <p class="card-text"><small>{{ product.description }}</small></p>
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="number" name="quantity" value="1" min="1" class="form-control mb-2" placeholder="Qty">
+                <button type="submit" class="btn btn-sm btn-primary btn-block">Add to Cart</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+  </div>
+
+  <!-- JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+
+  <!-- ✅ Custom JavaScript -->
+  <script src="{% static 'main.js' %}"></script>
+</body>
+</html>

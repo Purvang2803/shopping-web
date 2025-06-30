@@ -1,0 +1,84 @@
+/* Global */
+body {
+  background: linear-gradient(135deg, #f3f4f6, #e0eafc);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  background: #4a00e0;
+  background: linear-gradient(to right, #8e2de2, #4a00e0);
+  padding: 1rem 2rem;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff !important;
+}
+
+.navbar-nav .nav-link {
+  color: #fff !important;
+  margin-left: 20px;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffe600 !important;
+}
+
+/* Product Section */
+.container h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-shadow: 1px 1px 1px #ccc;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card-img-top {
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.card-text {
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background-color: #8e2de2;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #4a00e0;
+}
+
+/* Footer */
+.footer {
+  background: #4a00e0;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+  margin-top: 60px;
+}

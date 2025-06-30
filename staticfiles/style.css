@@ -1,0 +1,175 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Global */
+body {
+  background: linear-gradient(135deg, #f3f4f6, #e0eafc);
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(to right, #8e2de2, #4a00e0);
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff !important;
+}
+
+.navbar-nav .nav-link {
+  color: #fff !important;
+  margin-left: 20px;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffe600 !important;
+}
+
+/* Container Headings */
+.container h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-shadow: 1px 1px 1px #ccc;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Product Cards */
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 30px;
+  font-weight: 600;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background-color: #8e2de2;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #4a00e0;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Forms */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form textarea,
+form select {
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  transition: border 0.3s;
+  width: 100%;
+  font-size: 15px;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+  border-color: #8e2de2;
+  outline: none;
+  box-shadow: 0 0 5px rgba(142, 45, 226, 0.4);
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  margin-top: 20px;
+}
+
+/* Footer */
+.footer {
+  background: #4a00e0;
+  color: #fff;
+  padding: 25px 0;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 60px;
+}
