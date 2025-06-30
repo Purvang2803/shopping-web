@@ -169,4 +169,3 @@ All screenshots used in this README are located in the `screenshots/` folder. Ma
 
 ---
 
-✅ **Simple, colorful, and fully functional – ShopMart makes Django e-commerce development easy and beautiful!**
