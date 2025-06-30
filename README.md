@@ -55,12 +55,12 @@ ShopMart is a modern and responsive e-commerce web application built with **Djan
 ---
 
 ### ⚙️ Admin Panel - Dashboard
-![Admin Dashboard](screenshots/admin_dashboard.png)
+![Admin Dashboard](screenshots/admindashboard.png)
 
 ---
 
 ### 👥 Admin Panel - User List
-![Admin Users](screenshots/admin_users.png)
+![Admin Users](screenshots/adminusers.png)
 
 ---
 
