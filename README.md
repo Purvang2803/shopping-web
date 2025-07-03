@@ -43,6 +43,8 @@ ShopMart is a modern and responsive e-commerce web application built with **Djan
 ![Product Page](screenshots/products.png)
 
 ---
+### 🛒 Filter product  Page
+![Product Page](screenshots/filterproducts.png)
 
 ### 🧾 Cart Page
 ![Cart Page](screenshots/cart.png)
