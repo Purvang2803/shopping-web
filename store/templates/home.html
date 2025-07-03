@@ -14,39 +14,63 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
-        {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-        {% else %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
+      {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
 
-  <!-- PRODUCTS -->
-  <div class="container py-5">
-    <h2 class="text-center mb-4">Our Products</h2>
-    <div class="row">
-      {% for product in products %}
-      <div class="col-md-3 mb-4">
+<!-- Search + Filter -->
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form method="get" class="form-row">
+        <div class="col-12 col-md-5 mb-2 mb-md-0">
+          <input type="text" name="search" value="{{ search_query|default_if_none:'' }}" class="form-control" placeholder="Search products...">
+        </div>
+        <div class="col-12 col-md-4 mb-2 mb-md-0">
+          <select name="category" class="form-control">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+              <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <button type="submit" class="btn btn-primary btn-block">Search & Filter</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="container py-5">
+  <h2 class="text-center mb-4">Our Products</h2>
+  <div class="row">
+    {% for product in products %}
+      <div class="col-6 col-sm-6 col-md-4 col-lg-3 mb-4">
         <div class="card h-100">
-          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-          <div class="card-body">
+          <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text text-muted">₹{{ product.price }}</p>
             <p class="card-text"><small>{{ product.description }}</small></p>
-            <form method="post" action="{% url 'add_to_cart' product.id %}">
+            <form method="post" action="{% url 'add_to_cart' product.id %}" class="mt-auto">
               {% csrf_token %}
               <div class="form-group">
                 <input type="number" name="quantity" value="1" min="1" class="form-control mb-2" placeholder="Qty">
@@ -56,21 +80,24 @@
           </div>
         </div>
       </div>
-      {% endfor %}
-    </div>
+    {% empty %}
+      <div class="col-12">
+        <p class="text-center text-danger">No products found.</p>
+      </div>
+    {% endfor %}
   </div>
+</div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
-  </div>
+<!-- FOOTER -->
+<footer class="footer bg-dark text-white text-center py-3">
+  <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+</footer>
 
-  <!-- JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<script src="{% static 'main.js' %}"></script>
 
-  <!-- ✅ Custom JavaScript -->
-  <script src="{% static 'main.js' %}"></script>
 </body>
 </html>

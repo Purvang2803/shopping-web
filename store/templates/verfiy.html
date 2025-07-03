@@ -3,17 +3,56 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>OTP Verification - ShopMart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #343a40;
+    }
+
+    .navbar .navbar-brand, .navbar .nav-link {
+      color: white !important;
+    }
+
+    .navbar .nav-link:hover {
+      color: #ffc107 !important;
+    }
+
+    .otp-box {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-primary {
+      border-radius: 25px;
+      padding: 10px 25px;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
     <span class="navbar-toggler-icon"></span>
@@ -35,27 +74,31 @@
 <!-- OTP FORM -->
 <div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <h2 class="text-center mb-4">OTP Verification</h2>
-      {% if error %}
-        <div class="alert alert-danger">{{ error }}</div>
-      {% endif %}
-      <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="otp">Enter OTP</label>
-          <input type="text" name="otp" class="form-control" placeholder="6-digit OTP" required>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Verify</button>
-      </form>
+    <div class="col-md-6 col-sm-10">
+      <div class="otp-box">
+        <h2 class="text-center mb-4 text-primary">OTP Verification</h2>
+        {% if error %}
+          <div class="alert alert-danger text-center">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="otp">Enter OTP</label>
+            <input type="text" name="otp" class="form-control" placeholder="6-digit OTP" maxlength="6" required>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-block">Verify OTP</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<div class="footer">
+<footer class="text-center py-3">
   <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
-</div>
+</footer>
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>

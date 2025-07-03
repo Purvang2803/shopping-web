@@ -3,17 +3,67 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Order Success - ShopMart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #343a40;
+    }
+
+    .navbar .nav-link,
+    .navbar .navbar-brand {
+      color: white !important;
+    }
+
+    .navbar .nav-link:hover {
+      color: #ffc107 !important;
+    }
+
+    .success-box {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      padding: 40px;
+    }
+
+    .btn-primary, .btn-secondary {
+      border-radius: 25px;
+      padding: 10px 30px;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+      margin-top: 15px;
+    }
+
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
     <span class="navbar-toggler-icon"></span>
@@ -34,17 +84,27 @@
 
 <!-- SUCCESS CONTENT -->
 <div class="container py-5">
-  <div class="text-center">
-    <h2 class="text-success mb-3">🎉 Order Placed Successfully!</h2>
-    <p class="lead">Thank you for shopping with ShopMart.</p>
-    <a href="{% url 'home' %}" class="btn btn-primary mt-3">Back to Home</a>
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="text-center success-box">
+        <h2 class="text-success mb-3">🎉 Order Placed Successfully!</h2>
+        <p class="lead mb-4">Thank you for shopping with <strong>ShopMart</strong>. Your order will be shipped soon.</p>
+
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+
+        {% if order %}
+        <a href="{% url 'download_invoice' order_id=order.id %}" class="btn btn-outline-success mt-3">Download Invoice PDF</a>
+        {% endif %}
+        
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<div class="footer">
+<footer class="text-center py-3">
   <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
-</div>
+</footer>
 
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>

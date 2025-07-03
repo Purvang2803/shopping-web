@@ -1,72 +1,118 @@
-<!-- C:\shopping\store\templates\checkout.html -->
 {% load static %}
 {% load widget_tweaks %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>ShopMart - Shipping Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #f3f4f6, #dbeafe);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .navbar {
+      background-color: #4a00e0;
+    }
+
+    .navbar-brand, .nav-link {
+      color: white !important;
+    }
+
+    .nav-link:hover {
+      color: #ffe600 !important;
+    }
+
+    .form-control {
+      border-radius: 10px;
+    }
+
+    .btn-success {
+      border-radius: 25px;
+      font-weight: 600;
+      padding: 10px 30px;
+    }
+
+    .footer {
+      background-color: #4a00e0;
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
-      </ul>
-    </div>
-  </nav>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
+    </ul>
+  </div>
+</nav>
 
-  <!-- SHIPPING FORM -->
-  <div class="container py-5">
-    <h2 class="text-center mb-4 text-primary">Shipping Details</h2>
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <form method="post" class="shadow p-4 rounded bg-light">
-          {% csrf_token %}
-          <div class="form-group">
-            {{ form.full_name.label_tag }}
-            {{ form.full_name|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.address.label_tag }}
-            {{ form.address|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.state.label_tag }}
-            {{ form.state|add_class:"form-control" }}
-
-          </div>
-          <div class="form-group">
-            {{ form.city.label_tag }}
-            {{ form.city|add_class:"form-control" }}
-           
-          </div>
-          <div class="form-group">
-            {{ form.pincode.label_tag }}
-            {{ form.pincode|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.phone.label_tag }}
-            {{ form.phone|add_class:"form-control" }}
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-success px-5 mt-3">Continue to OTP Verification</button>
-          </div>
-        </form>
-      </div>
+<!-- SHIPPING FORM -->
+<div class="container py-5 content">
+  <h2 class="text-center mb-4 text-primary font-weight-bold">Shipping Details</h2>
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+      <form method="post" class="shadow p-4 rounded bg-white">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.full_name.label_tag }}
+          {{ form.full_name|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.address.label_tag }}
+          {{ form.address|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.state.label_tag }}
+          {{ form.state|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.city.label_tag }}
+          {{ form.city|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.pincode.label_tag }}
+          {{ form.pincode|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.phone.label_tag }}
+          {{ form.phone|add_class:"form-control" }}
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-success mt-3">Continue to OTP Verification</button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
-  <div class="footer text-center py-3 bg-light mt-5">
-    <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
-  </div>
+<!-- FOOTER -->
+<footer class="footer text-center py-3 mt-auto">
+  <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+</footer>
 
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

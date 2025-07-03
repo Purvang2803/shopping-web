@@ -1,0 +1,24 @@
+<!-- wishlist.html -->
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Your Wishlist - ShopMart</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <h2>Your Wishlist</h2>
+    <div class="container">
+        {% for item in wishlist_items %}
+            <div class="card">
+                <h5>{{ item.product.name }}</h5>
+                <p>Price: ₹{{ item.product.price }}</p>
+                <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-primary">Add to Cart</a>
+            </div>
+        {% empty %}
+            <p>Your wishlist is empty.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

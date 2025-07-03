@@ -3,64 +3,97 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Your Cart - ShopMart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <style>
+    html, body {
+      height: 100%;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+    }
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .content-section {
+      flex: 1;
+      padding: 50px 15px;
+    }
+    .footer {
+      background-color: #4a00e0;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+    }
+    .list-group-item {
+      background-color: #fff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .btn-success {
+      font-weight: 600;
+      padding: 10px 25px;
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-      <li class="nav-item active"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
-      {% if user.is_authenticated %}
-        <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-      {% else %}
-        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-      {% endif %}
-    </ul>
-  </div>
-</nav>
+<div class="page-wrapper">
 
-<!-- CART CONTENT -->
-<div class="container py-5">
-  <h2 class="text-center mb-4">Your Cart</h2>
-  
-  <ul class="list-group mb-3 w-75 mx-auto">
-  {% for item in cart_items %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      {{ item.product.name }} x{{ item.quantity }}
-      <strong>₹{{ item.total_price }}</strong>
-    </li>
-  {% empty %}
-    <li class="list-group-item text-center">Your cart is empty.</li>
-  {% endfor %}
-</ul>
-
-
-  {% if cart_items %}
-    <h4 class="text-center mt-3">Total: ₹{{ total }}</h4>
-    <div class="text-center">
-      <a href="{% url 'checkout' %}" class="btn btn-success mt-3">Place Order</a>
-
-
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+      </ul>
     </div>
-  {% endif %}
-</div>
+  </nav>
 
-<!-- FOOTER -->
-<div class="footer">
-  <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+  <!-- CART CONTENT -->
+  <div class="content-section container">
+    <h2 class="text-center mb-4">Your Cart</h2>
+
+    <ul class="list-group mb-4 mx-auto" style="max-width: 600px;">
+      {% for item in cart_items %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ item.product.name }} <span class="badge badge-secondary">x{{ item.quantity }}</span></span>
+          <strong>₹{{ item.total_price }}</strong>
+        </li>
+      {% empty %}
+        <li class="list-group-item text-center">Your cart is empty.</li>
+      {% endfor %}
+    </ul>
+
+    {% if cart_items %}
+      <h4 class="text-center">Total: ₹{{ total }}</h4>
+      <div class="text-center">
+        <a href="{% url 'checkout' %}" class="btn btn-success mt-4">Proceed to Checkout</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+  </footer>
+
 </div>
 
 <!-- JS -->

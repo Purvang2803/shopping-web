@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ❌ Confirm before delete (e.g., remove from cart)
+  // ❌ Confirm before delete
   document.querySelectorAll('.btn-danger').forEach(btn => {
     btn.addEventListener('click', e => {
       if (!confirm("Remove this item from your cart?")) e.preventDefault();
     });
   });
 
-  // 📱 Collapse navbar on link click (mobile)
+  // 📱 Collapse navbar on link click
   const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
   const navbar = document.querySelector('.navbar-collapse');
   navLinks.forEach(link => {
@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     toggle.style.marginLeft = '10px';
     toggle.style.userSelect = 'none';
     toggle.title = "Show/Hide Password";
+    input.parentNode.style.display = 'flex';
+    input.parentNode.style.alignItems = 'center';
     input.parentNode.appendChild(toggle);
 
     toggle.addEventListener('click', () => {
@@ -45,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 🌍 Dynamic city dropdown by state
+  // 🌍 Dynamic city dropdown
   const stateSelect = document.getElementById('id_state');
   const citySelect = document.getElementById('id_city');
   const cities = {
@@ -71,9 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 💦 Ripple effect on buttons
   document.querySelectorAll('button').forEach(btn => {
+    btn.style.position = 'relative';
+    btn.style.overflow = 'hidden';
     btn.addEventListener('click', e => {
       const ripple = document.createElement('span');
-      ripple.classList.add('ripple');
+      ripple.className = 'ripple';
       ripple.style.left = `${e.offsetX}px`;
       ripple.style.top = `${e.offsetY}px`;
       btn.appendChild(ripple);
@@ -81,15 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 🔥 Toast (for success messages via JS)
-  const showToast = (msg = "Success!", type = "success") => {
+  // 🔥 Toast messages
+  window.showToast = (msg = "Success!", type = "success") => {
     const toast = document.createElement('div');
     toast.className = `custom-toast ${type}`;
     toast.innerText = msg;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 4000);
   };
-
-  // Example usage: showToast("Product added to cart!", "success");
 
 });

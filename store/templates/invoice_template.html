@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Invoice - ShopMart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+
+    .invoice-box {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 30px;
+      border: 1px solid #eee;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    .header, .footer {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .details {
+      margin-top: 25px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      overflow-x: auto;
+    }
+
+    table th, table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .totals {
+      margin-top: 20px;
+      text-align: right;
+    }
+
+    @media (max-width: 768px) {
+      .invoice-box {
+        padding: 20px 15px;
+      }
+
+      table thead {
+        display: none;
+      }
+
+      table tr {
+        display: block;
+        margin-bottom: 15px;
+      }
+
+      table td {
+        display: flex;
+        justify-content: space-between;
+        border: none;
+        border-bottom: 1px solid #eee;
+      }
+
+      table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        width: 50%;
+      }
+
+      .text-right, .totals {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="invoice-box">
+  <div class="header">
+    <h2>ShopMart Invoice</h2>
+    <p><strong>Invoice No:</strong> {{ order.invoice_number }}<br>
+       <strong>Date:</strong> {{ order.created_at|date:"Y-m-d H:i" }}</p>
+  </div>
+
+  <div class="details">
+    <h4>Customer Details:</h4>
+    <p><strong>Name:</strong> {{ order.user.username }}</p>
+    <p><strong>Email:</strong> {{ order.user.email }}</p>
+    {% if order.shipping_address %}
+      <p><strong>Address:</strong> {{ order.shipping_address.address_line }},
+        {{ order.shipping_address.city }}, {{ order.shipping_address.state }} - {{ order.shipping_address.zip_code }}</p>
+    {% endif %}
+  </div>
+
+  <div class="details">
+    <h4>Order Details:</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Product</th>
+          <th>Price (₹)</th>
+          <th>Quantity</th>
+          <th>Total (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items.all %}
+        <tr>
+          <td data-label="#"> {{ forloop.counter }}</td>
+          <td data-label="Product">{{ item.product.name }}</td>
+          <td data-label="Price">₹{{ item.product.price }}</td>
+          <td data-label="Quantity">{{ item.quantity }}</td>
+          <td data-label="Total">₹{{ item.total_price }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="totals">
+    <p><strong>Subtotal:</strong> ₹{{ order.total }}</p>
+    <p><strong>Tax (18%):</strong> ₹{{ order.total|floatformat:2|mul:"0.18"|floatformat:2 }}</p>
+    <p><strong>Grand Total:</strong> ₹{{ order.total|floatformat:2|mul:"1.18"|floatformat:2 }}</p>
+  </div>
+
+  <div class="footer">
+    <p>Thank you for shopping with ShopMart!</p>
+  </div>
+</div>
+
+</body>
+</html>

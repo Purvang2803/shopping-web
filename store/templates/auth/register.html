@@ -5,47 +5,90 @@
   <meta charset="utf-8">
   <title>Register - ShopMart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <style>
+    html, body {
+      height: 100%;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+    }
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 15px;
+    }
+    .form-box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+    .footer {
+      background-color: #4a00e0;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
-  <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
-</nav>
+<div class="page-wrapper">
 
-<!-- MAIN CONTENT -->
-<div class="container py-5">
-  <h2 class="mb-4 text-center">Create Your ShopMart Account</h2>
-
-  <!-- SUCCESS / ERROR MESSAGES -->
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} text-center" role="alert">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
+  </nav>
 
   <!-- REGISTRATION FORM -->
-  <form method="POST" class="w-50 mx-auto shadow p-4 rounded bg-light">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Username" class="form-control mb-3" required>
-    <input type="email" name="email" placeholder="Email" class="form-control mb-3" required>
-    <input type="text" name="phone" placeholder="Phone" class="form-control mb-3" required>
-    <input type="password" name="password" placeholder="Password" class="form-control mb-3" required>
-    <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control mb-3" required>
-    <button type="submit" class="btn btn-success btn-block">Register</button>
-    <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
-  </form>
+  <div class="form-section">
+    <div class="form-box">
+      <h3 class="text-center mb-4">Create Your ShopMart Account</h3>
+
+      <!-- SUCCESS / ERROR MESSAGES -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} text-center">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" class="form-control mb-3" required>
+        <input type="email" name="email" placeholder="Email" class="form-control mb-3" required>
+        <input type="text" name="phone" placeholder="Phone" class="form-control mb-3" required>
+        <input type="password" name="password" placeholder="Password" class="form-control mb-3" required>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" class="form-control mb-3" required>
+
+        <button type="submit" class="btn btn-success btn-block">Register</button>
+
+        <p class="text-center mt-3">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+  </footer>
+
 </div>
 
-<!-- FOOTER -->
-<footer class="text-center mt-5">
-  <p>© 2025 ShopMart. All rights reserved.</p>
-</footer>
-
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

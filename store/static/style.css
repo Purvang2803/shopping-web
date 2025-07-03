@@ -1,29 +1,28 @@
-/* Global */
+/* GLOBAL STYLES */
 body {
   background: linear-gradient(135deg, #f3f4f6, #e0eafc);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   opacity: 0;
   animation: fadeIn 0.7s ease-in-out forwards;
+  padding-top: 70px; /* for navbar spacing on small screens */
 }
 
-/* Smooth fade-in animation */
 @keyframes fadeIn {
   to {
     opacity: 1;
   }
 }
 
-/* Navbar */
+/* NAVBAR */
 .navbar {
   background: linear-gradient(to right, #8e2de2, #4a00e0);
-  padding: 1rem 2rem;
+  padding: 0.8rem 1.2rem;
   transition: all 0.3s ease-in-out;
   z-index: 1000;
-}
-
-.navbar-shadow {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -34,46 +33,52 @@ body {
 
 .navbar-nav .nav-link {
   color: #fff !important;
-  margin-left: 20px;
-  transition: color 0.3s ease;
+  margin-left: 15px;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .navbar-nav .nav-link:hover {
   color: #ffe600 !important;
 }
 
-/* Product Section */
+.navbar-toggler {
+  border: none;
+  background-color: #fff;
+}
+
+/* CONTAINERS */
 .container h2 {
-  font-size: 2.3rem;
+  font-size: 2rem;
   font-weight: bold;
   color: #333;
   text-shadow: 1px 1px 1px #ccc;
 }
 
-/* Card Styling */
+/* PRODUCT CARDS */
 .card {
   border: none;
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   background-color: #ffffff;
+  height: 100%;
 }
 
 .card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .card-img-top {
-  height: 220px;
+  height: 200px;
   object-fit: cover;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
 
 .card-title {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
 }
 
@@ -82,7 +87,17 @@ body {
   color: #555;
 }
 
-/* Buttons */
+/* FORMS */
+input.form-control,
+select.form-control {
+  border-radius: 10px;
+}
+
+form .btn-block {
+  border-radius: 30px;
+}
+
+/* BUTTONS */
 .btn-primary,
 .btn-success {
   background-color: #8e2de2;
@@ -95,14 +110,10 @@ body {
 .btn-primary:hover,
 .btn-success:hover {
   background-color: #4a00e0;
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
-.btn-block {
-  border-radius: 30px;
-}
-
-/* Ripple Effect */
+/* RIPPLE EFFECT */
 button {
   position: relative;
   overflow: hidden;
@@ -126,7 +137,7 @@ button {
   }
 }
 
-/* Toast Notifications */
+/* TOAST NOTIFICATION */
 .custom-toast {
   position: fixed;
   bottom: 20px;
@@ -152,7 +163,7 @@ button {
   }
 }
 
-/* Badge (Cart) */
+/* BADGES */
 .badge {
   font-size: 0.8rem;
   background-color: #ffe600;
@@ -162,11 +173,45 @@ button {
   border-radius: 50%;
 }
 
-/* Footer */
+/* FOOTER */
 .footer {
   background: #4a00e0;
   color: #fff;
   padding: 20px 0;
   text-align: center;
-  margin-top: 60px;
+  margin-top: 80px;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 767px) {
+  .navbar-brand {
+    font-size: 1.4rem;
+  }
+
+  .navbar-nav .nav-link {
+    margin-left: 0;
+    padding: 10px 0;
+  }
+
+  .card-img-top {
+    height: 180px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .container h2 {
+    font-size: 1.6rem;
+  }
+
+  .btn-block {
+    font-size: 0.95rem;
+  }
+
+  .custom-toast {
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.9rem;
+  }
 }

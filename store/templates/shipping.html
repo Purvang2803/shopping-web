@@ -4,82 +4,127 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>ShopMart - Shipping Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #343a40;
+    }
+
+    .navbar .nav-link,
+    .navbar .navbar-brand {
+      color: white !important;
+    }
+
+    .navbar .nav-link:hover {
+      color: #ffc107 !important;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-control {
+      border-radius: 8px;
+    }
+
+    .btn-success {
+      border-radius: 25px;
+      font-weight: 500;
+      padding: 10px 30px;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
-        {% if user.is_authenticated %}
-          <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
-        {% else %}
-          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
+      {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="#">{{ user.username }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
 
-  <!-- SHIPPING FORM -->
-  <div class="container py-5">
-    <h2 class="text-center mb-4 text-primary">Shipping Details</h2>
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <form method="post" class="shadow p-4 rounded bg-light">
-          {% csrf_token %}
-          <div class="form-group">
-            {{ form.name.label_tag }}
-            {{ form.name|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.address.label_tag }}
-            {{ form.address|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.city.label_tag }}
-            {{ form.city|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.state.label_tag }}
-            {{ form.state|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.pincode.label_tag }}
-            {{ form.pincode|add_class:"form-control" }}
-          </div>
-          <div class="form-group">
-            {{ form.phone.label_tag }}
-            {{ form.phone|add_class:"form-control" }}
-          </div>
-          <div class="text-center">
-            <button type="submit" class="btn btn-success px-5 mt-3">Continue to OTP Verification</button>
-          </div>
-        </form>
-      </div>
+<!-- SHIPPING FORM -->
+<div class="container py-5">
+  <h2 class="text-center mb-4 text-primary">Shipping Details</h2>
+  <div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+      <form method="post" class="form-container">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.name.label_tag }}
+          {{ form.name|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.address.label_tag }}
+          {{ form.address|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.city.label_tag }}
+          {{ form.city|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.state.label_tag }}
+          {{ form.state|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.pincode.label_tag }}
+          {{ form.pincode|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          {{ form.phone.label_tag }}
+          {{ form.phone|add_class:"form-control" }}
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-success mt-3">Continue to OTP Verification</button>
+        </div>
+      </form>
     </div>
   </div>
+</div>
 
-  <!-- FOOTER -->
-  <div class="footer text-center py-3 bg-light mt-5">
-    <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
-  </div>
+<!-- FOOTER -->
+<footer class="text-center py-3">
+  <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+</footer>
 
-  <!-- JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
