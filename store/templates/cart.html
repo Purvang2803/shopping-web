@@ -36,9 +36,14 @@
       margin-bottom: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
-    .btn-success {
-      font-weight: 600;
+    .btn {
       padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: 600;
+    }
+    .btn-outline-primary:hover {
+      color: white;
+      background-color: #007bff;
     }
   </style>
 </head>
@@ -83,8 +88,10 @@
 
     {% if cart_items %}
       <h4 class="text-center">Total: ₹{{ total }}</h4>
-      <div class="text-center">
-        <a href="{% url 'checkout' %}" class="btn btn-success mt-4">Proceed to Checkout</a>
+
+      <div class="d-flex justify-content-center gap-3 flex-wrap mt-4">
+        <a href="{% url 'checkout' %}" class="btn btn-success mr-3">Proceed to Checkout</a>
+        <a href="{% url 'download_cart_invoice' %}" class="btn btn-outline-primary">Download Cart Invoice</a>
       </div>
     {% endif %}
   </div>

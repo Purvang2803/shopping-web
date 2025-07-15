@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from .product import Product
 from .ShippingAddress import ShippingAddress
-import random
 from decimal import Decimal
+import random
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -37,6 +37,7 @@ class Order(models.Model):
     invoice_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
 
     def generate_otp(self):
+        """Generate and save a 6-digit OTP"""
         otp_code = str(random.randint(100000, 999999))
         self.otp = otp_code
         self.save()
@@ -45,10 +46,15 @@ class Order(models.Model):
     def generate_invoice_number(self):
         """Generate a unique invoice number"""
         if not self.invoice_number:
-            self.invoice_number = f"INV-{random.randint(10000, 99999)}-{self.id}"
+            # Safe fallback if order not saved yet
+            random_part = random.randint(10000, 99999)
+            suffix = self.id if self.id else random.randint(1000, 9999)
+            self.invoice_number = f"INV-{random_part}-{suffix}"
             self.save()
+
     def total_with_tax(self):
-        return round(self.total * 1.18, 2) 
+        """Total amount including 18% tax"""
+        return round(self.total * Decimal('1.18'), 2)
 
     def __str__(self):
         return f"Order #{self.id} by {self.user.username}"

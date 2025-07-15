@@ -92,9 +92,6 @@
 
         <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
 
-        {% if order %}
-        <a href="{% url 'download_invoice' order_id=order.id %}" class="btn btn-outline-success mt-3">Download Invoice PDF</a>
-        {% endif %}
         
       </div>
     </div>

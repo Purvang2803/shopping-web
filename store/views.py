@@ -17,6 +17,13 @@ from .models.userprofile import UserProfile
 from .form import RegisterForm, LoginForm
 from .models import ShippingAddress
 from .form import ShippingAddressForm
+from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
+from .models.order import Order
+from .models.review import Review
+from .models.wishlist import Wishlist
+from .models import ShippingAddress
+from .models.userprofile import UserProfile
 
 # ---------------- AUTH ----------------
 def register_view(request):
@@ -75,6 +82,33 @@ def home(request):
         'selected_category': selected_category,
         'search_query': search_query,
     })
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models.order import Order
+from .models.review import Review
+from .models.wishlist import Wishlist
+from .models import ShippingAddress
+from .models.userprofile import UserProfile
+
+
+
+@login_required
+def user_dashboard(request):
+    # Fetch or create profile
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+    orders = Order.objects.filter(user=request.user)
+    wishlist = Wishlist.objects.filter(user=request.user)
+    reviews = Review.objects.filter(user=request.user)
+    addresses = ShippingAddress.objects.filter(user=request.user)
+
+    return render(request, 'user_dashboard.html', {
+        'orders': orders,
+        'wishlist': wishlist,
+        'reviews': reviews,
+        'addresses': addresses,
+        'profile': profile,
+    })
 
 # ---------------- CART ----------------
 @require_POST
@@ -109,11 +143,46 @@ def add_to_wishlist(request, product_id):
 def view_wishlist(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)
     return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
+
+
+
+@login_required
+def download_cart_invoice(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    if not cart_items.exists():
+        return HttpResponse("Cart is empty.")
+
+    total = sum(item.total_price() for item in cart_items)
+
+    html = render_to_string('cart_invoice_template.html', {
+        'user': request.user,
+        'cart_items': cart_items,
+        'total': total,
+    })
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="cart_invoice.pdf"'
+
+    pisa_status = pisa.CreatePDF(BytesIO(html.encode('UTF-8')), dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error generating cart invoice.')
+
+    return response
+
 @login_required
 def view_cart(request):
     cart_items = Cart.objects.filter(user=request.user)
     total = sum(item.total_price() for item in cart_items)
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total': total})
+    
+    # Get last verified order (optional safety check for status)
+    last_order = Order.objects.filter(user=request.user, is_verified=True).order_by('-created_at').first()
+
+    return render(request, 'cart.html', {
+        'cart_items': cart_items,
+        'total': total,
+        'last_order': last_order
+    })
+
 
 # ---------------- ORDER ----------------
 @login_required

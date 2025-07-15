@@ -1,0 +1,197 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>User Dashboard - ShopMart</title>
+
+  <!-- Bootstrap 4.6 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .navbar .nav-link,
+    .navbar .navbar-brand {
+      color: white !important;
+    }
+
+    .navbar .nav-link:hover {
+      color: #ffc107 !important;
+    }
+
+    .dashboard-title {
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-header {
+      background-color: #343a40;
+      color: #fff;
+      font-weight: bold;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .icon-title {
+      margin-right: 8px;
+    }
+
+    .address-box {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #e1e1e1;
+      padding-bottom: 10px;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home' %}">ShopMart</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'view_cart' %}">Cart</a></li>
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-person-circle"></i> {{ user.username }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div class="container py-5">
+  <h2 class="text-center dashboard-title"><i class="bi bi-person-lines-fill"></i> Welcome, {{ request.user.username }}</h2>
+
+  <div class="row">
+    <!-- Profile Info -->
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header"><i class="bi bi-person"></i> Profile Info</div>
+        <div class="card-body">
+          <p><strong>Email:</strong> {{ request.user.email }}</p>
+          <p><strong>Phone:</strong> {{ profile.phone }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header"><i class="bi bi-bag"></i> Recent Orders</div>
+        <div class="card-body">
+          {% if orders %}
+            <ul class="list-group list-group-flush">
+              {% for order in orders %}
+                <li class="list-group-item">
+                  <strong>Invoice:</strong> #{{ order.invoice_number }}<br>
+                  <strong>Total:</strong> ₹{{ order.total }}<br>
+                  <strong>Status:</strong> <span class="badge badge-info">{{ order.status }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No orders found.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Wishlist -->
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-header"><i class="bi bi-heart"></i> My Wishlist</div>
+        <div class="card-body">
+          {% if wishlist %}
+            <ul class="list-group list-group-flush">
+              {% for item in wishlist %}
+                <li class="list-group-item">{{ item.product.name }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No wishlist items.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="col-md-6 col-lg-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header"><i class="bi bi-chat-dots"></i> My Reviews</div>
+        <div class="card-body">
+          {% if reviews %}
+            <ul class="list-group list-group-flush">
+              {% for review in reviews %}
+                <li class="list-group-item">
+                  <strong>{{ review.product.name }}</strong><br>
+                  ⭐ {{ review.rating }} - {{ review.comment }}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>No reviews submitted.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Addresses -->
+    <div class="col-md-6 col-lg-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header"><i class="bi bi-geo-alt"></i> Saved Addresses</div>
+        <div class="card-body">
+          {% if addresses %}
+            {% for addr in addresses|dictsort:"id"|slice:":1" %}
+              <div class="address-box">
+                <p><i class="bi bi-house-door"></i> {{ addr.address_line }}</p>
+                <p><i class="bi bi-geo-alt-fill"></i> {{ addr.city }}, {{ addr.state }} - {{ addr.zip_code }}</p>
+              </div>
+            {% endfor %}
+            <small class="text-muted">Only showing most recent address.</small>
+          {% else %}
+            <p>No addresses saved.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="mb-0">© 2025 ShopMart. All rights reserved.</p>
+</footer>
+
+<!-- JS Scripts -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
