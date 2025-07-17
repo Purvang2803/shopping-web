@@ -4,6 +4,8 @@ from .product import Product
 from .ShippingAddress import ShippingAddress
 from decimal import Decimal
 import random
+from .promocode import PromoCode
+
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -35,26 +37,33 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
     invoice_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    
+    promo_code = models.ForeignKey(PromoCode, on_delete=models.SET_NULL, null=True, blank=True)
 
     def generate_otp(self):
-        """Generate and save a 6-digit OTP"""
         otp_code = str(random.randint(100000, 999999))
         self.otp = otp_code
         self.save()
         return otp_code
 
     def generate_invoice_number(self):
-        """Generate a unique invoice number"""
         if not self.invoice_number:
-            # Safe fallback if order not saved yet
             random_part = random.randint(10000, 99999)
             suffix = self.id if self.id else random.randint(1000, 9999)
             self.invoice_number = f"INV-{random_part}-{suffix}"
             self.save()
 
+    def total_after_discount(self):
+        """Applies promo code discount if valid"""
+        if self.promo_code and self.promo_code.is_valid():
+            discount_amount = (self.total * Decimal(self.promo_code.discount_percent)) / Decimal(100)
+            return self.total - discount_amount
+        return self.total
+
     def total_with_tax(self):
-        """Total amount including 18% tax"""
-        return round(self.total * Decimal('1.18'), 2)
+        """Apply tax after promo discount"""
+        total_discounted = self.total_after_discount()
+        return round(total_discounted * Decimal('1.18'), 2)
 
     def __str__(self):
         return f"Order #{self.id} by {self.user.username}"

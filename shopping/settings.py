@@ -30,7 +30,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = [ 
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,6 +48,27 @@ INSTALLED_APPS = [
   
     
 ]
+JAZZMIN_SETTINGS = {
+    "site_title": "ShopMart Admin",
+    "site_header": "ShopMart Admin Panel",
+    "site_brand": "ShopMart",
+    "welcome_sign": "Welcome to ShopMart Admin",
+    "copyright": "© 2025 ShopMart",
+    "search_model": ["store.Product", "store.Order"],
+    "topmenu_links": [
+        {"name": "Home", "url": "/", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+        {"app": "store"},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "store.product": "fas fa-box",
+        "store.order": "fas fa-shopping-cart",
+    },
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

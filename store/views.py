@@ -82,6 +82,7 @@ def home(request):
         'selected_category': selected_category,
         'search_query': search_query,
     })
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models.order import Order
@@ -207,23 +208,83 @@ def place_order(request):
 
     return redirect('verify_otp', order_id=order.id)
 
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import PromoCode
+from .models.order import Order, Cart
+from .models.ShippingAddress import ShippingAddress
+from .form import ShippingAddressForm, PromoCodeForm
+from django.core.mail import send_mail
+from decimal import Decimal
+from django.utils import timezone
+
+@login_required
 @login_required
 def checkout_view(request):
     cart_items = Cart.objects.filter(user=request.user)
     if not cart_items:
         return redirect('home')
 
-    if request.method == 'POST':
+    subtotal = sum(item.total_price() for item in cart_items)
+    discount = Decimal('0.00')
+    promo_code_applied = None
+
+    if request.method == 'POST' and 'apply_promo' in request.POST:
+        promo_form = PromoCodeForm(request.POST)
+        if promo_form.is_valid():
+            code_entered = promo_form.cleaned_data['code']
+            try:
+                promo = PromoCode.objects.get(code__iexact=code_entered)
+                if promo.is_valid():
+                    discount = subtotal * Decimal(promo.discount_percent) / 100
+                    promo_code_applied = promo
+                    request.session['promo_code'] = promo.code
+                else:
+                    promo_form.add_error('code', 'Promo code is expired or inactive.')
+            except PromoCode.DoesNotExist:
+                promo_form.add_error('code', 'Invalid promo code.')
+        form = ShippingAddressForm()
+        total = subtotal - discount
+        return render(request, 'checkout.html', {
+            'form': form,
+            'promo_form': promo_form,
+            'cart_items': cart_items,
+            'subtotal': subtotal,
+            'discount': discount,
+            'total': total,
+            'promo_code_applied': promo_code_applied
+        })
+
+    elif request.method == 'POST':
         form = ShippingAddressForm(request.POST)
+        promo_form = PromoCodeForm()
         if form.is_valid():
             shipping_address = form.save(commit=False)
             shipping_address.user = request.user
             shipping_address.save()
 
-            total = sum(item.total_price() for item in cart_items)
-            order = Order.objects.create(user=request.user, total=total)
+            promo_code = request.session.get('promo_code')
+            if promo_code:
+                try:
+                    promo = PromoCode.objects.get(code__iexact=promo_code)
+                    if promo.is_valid():
+                        discount = subtotal * Decimal(promo.discount_percent) / 100
+                        promo_code_applied = promo
+                except PromoCode.DoesNotExist:
+                    pass
+
+            total = subtotal - discount
+
+            order = Order.objects.create(
+                user=request.user,
+                total=total,
+                shipping_address=shipping_address
+            )
             order.items.set(cart_items)
-            order.shipping_address = shipping_address
+
+            if promo_code_applied:
+                order.promo_code = promo_code_applied
+
             order.generate_invoice_number()
             otp = order.generate_otp()
 
@@ -235,11 +296,24 @@ def checkout_view(request):
                 fail_silently=False,
             )
 
+            request.session.pop('promo_code', None)
             return redirect('verify_otp', order_id=order.id)
     else:
         form = ShippingAddressForm()
+        promo_form = PromoCodeForm()
 
-    return render(request, 'checkout.html', {'form': form, 'cart_items': cart_items})
+    total = subtotal - discount
+
+    return render(request, 'checkout.html', {
+        'form': form,
+        'promo_form': promo_form,
+        'cart_items': cart_items,
+        'subtotal': subtotal,
+        'discount': discount,
+        'total': total,
+        'promo_code_applied': promo_code_applied
+    })
+
 
 @login_required
 def verify_otp(request, order_id):

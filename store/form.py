@@ -37,6 +37,7 @@ class RegisterForm(forms.ModelForm):
         help_texts = {
             'username': None,  # remove default help text
         }
+    
 
     def clean(self):
         cleaned_data = super().clean()
@@ -66,3 +67,10 @@ class ShippingAddressForm(forms.ModelForm):
         widgets = {
             'address': forms.Textarea(attrs={'rows': 2}),
         }
+class PromoCodeForm(forms.Form):
+    code = forms.CharField(
+        max_length=20,
+        label="Promo Code",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter promo code'})
+    )
+
