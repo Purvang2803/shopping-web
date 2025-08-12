@@ -4,7 +4,8 @@ from .models.category import Category
 from .models.order import Cart, Order
 from .models.userprofile import UserProfile
 from .models import PromoCode
-
+from .models import SpecialOffer
+from .models import Notification
 
 # ---------------- Custom Price Range Filter ----------------
 class FlipkartStylePriceFilter(admin.SimpleListFilter):
@@ -78,3 +79,20 @@ class AdminOrder(admin.ModelAdmin):
     list_display = ('id', 'user', 'total', 'is_verified', 'created_at')
     search_fields = ('user__username',)
     readonly_fields = ('otp', 'created_at')
+
+
+
+@admin.register(SpecialOffer)
+class SpecialOfferAdmin(admin.ModelAdmin):
+    list_display = ('title', 'description', 'discount_percent', 'created_at')
+
+# store/admin.py
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('title', 'message', 'created_at', 'is_active')
+    list_filter = ('is_active', 'created_at')
+    search_fields = ('title', 'message')
+
+
+

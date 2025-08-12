@@ -349,3 +349,36 @@ def download_invoice(request, order_id):
     if pisa_status.err:
         return HttpResponse('We had some errors while generating the invoice PDF.')
     return response
+# views.py
+from django.http import StreamingHttpResponse
+from time import sleep
+from .models import Notification
+
+def sse_notifications(request):
+    def event_stream():
+        while True:
+            offers = "🔥 Flash Sale: 50% OFF!"
+            if request.user.is_authenticated:
+                Notification.objects.create(user=request.user, title=offers)
+            yield f"data: {offers}\n\n"
+            sleep(10)
+    return StreamingHttpResponse(event_stream(), content_type='text/event-stream')
+# store/views.py
+from django.shortcuts import redirect, get_object_or_404
+from .models import Notification, SpecialOffer
+
+def mark_notification_read(request, pk):
+    notification = get_object_or_404(Notification, pk=pk)
+    notification.is_active = False  # remove from feed
+    notification.save()
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+from django.shortcuts import get_object_or_404, redirect
+from .models import SpecialOffer  # Make sure this matches your model name
+
+def mark_offer_read(request, pk):
+    offer = get_object_or_404(SpecialOffer, pk=pk)
+    offer.is_active = False  # Or set a user-specific "seen" flag if you have one
+    offer.save()
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
